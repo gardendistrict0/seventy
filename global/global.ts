@@ -16,6 +16,21 @@ export enum TokenType {
     MULTIPLY,
     DIVIDE,
     EQUAL,
+    ACCESS_PERIOD,
+
+    // COMPARISON
+    GREATER_THAN,
+    LESS_THAN,
+    GREATER_THAN_EQUAL,
+    LESS_THAN_EQUAL,
+    EQUAL_TO,
+    NOT_EQUAL_TO,
+    AND,
+    OR,
+    XOR,
+    NOR,
+    NAND,
+    XNOR,
 
     // TYPE
     STRING,
