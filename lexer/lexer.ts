@@ -1,4 +1,4 @@
-import { isNumber, Token, TokenType } from "../global.ts";
+import { isNumber, Token, TokenType } from "../global/global.ts";
 
 let sourceIndex: number = 0;
 let testNumber : number;
