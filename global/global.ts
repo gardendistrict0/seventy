@@ -2,7 +2,7 @@
 //--------------------------------------------------------------------------------------------------------------
 
 export enum TokenType {
-    // Comment
+    // COMMENT
     COMMENT,
     MULTILINE,
 
@@ -31,6 +31,7 @@ export enum TokenType {
     NOR,
     NAND,
     XNOR,
+    NOT,
 
     // TYPE
     STRING,
@@ -39,7 +40,8 @@ export enum TokenType {
     BINARY,
 
     // MISC
-    NEWLINE
+    NEWLINE,
+    PRG_CONFIG
 }
 
 export interface Token {

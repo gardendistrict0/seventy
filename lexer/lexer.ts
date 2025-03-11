@@ -24,6 +24,7 @@ export class Lexer {
         while (sourceIndex < this.source.length && this.source.charAt(sourceIndex) !== "\n") {
             sourceIndex++;
           }
+          // Don't push because it's a comment (duh?)
       }
       //TODO: Add multiline comments later
 
@@ -32,7 +33,9 @@ export class Lexer {
         testNumber = parseInt(char);
         while (sourceIndex < this.source.length && isNumber(this.source.charAt(sourceIndex++))) {
             testNumber = testNumber * 10 + parseInt(this.source.charAt(sourceIndex));
+            sourceIndex++;
         }
+        tokens.push({type: TokenType.INTEGER, value: testNumber.toString()});
       }
 
       // String control
@@ -40,16 +43,20 @@ export class Lexer {
       // Double quote strings
       if (char == '"') {
         testString = "";
+        sourceIndex++;
         while (sourceIndex < this.source.length && this.source.charAt(sourceIndex++) !== '"') {
           testString += this.source.charAt(sourceIndex);
+          sourceIndex++;
         }
       }
 
       // Single quote strings
       if (char == "'") {
         testString = "";
+        sourceIndex++;
         while (sourceIndex < this.source.length && this.source.charAt(sourceIndex++) !== "'") {
           testString += this.source.charAt(sourceIndex);
+          sourceIndex++;
         }
       }
 
@@ -60,6 +67,19 @@ export class Lexer {
       if (char == "*") tokens.push({type: TokenType.MULTIPLY, value: "*"});
       if (char == "/") tokens.push({type: TokenType.DIVIDE, value: "/"});
       if (char == "=") tokens.push({type: TokenType.EQUAL, value: "="});
+
+      // Comparison control
+      if (char == "<") tokens.push({type: TokenType.LESS_THAN, value: "<"});
+      if (char == ">") tokens.push({type: TokenType.GREATER_THAN, value: ">"});
+      if (char == "!") tokens.push({type: TokenType.NOT, value: "!"});
+      if (char == "&&") tokens.push({type: TokenType.AND, value: "&"});
+      if (char == "||") tokens.push({type: TokenType.OR, value: "|"});
+      if (char == "^") tokens.push({type: TokenType.XOR, value: "^"});
+      if (char == "~") tokens.push({type: TokenType.NOR, value: "~"});
+      if (char == "!&") tokens.push({type: TokenType.NAND, value: "&"});
+      if (char == "!|") tokens.push({type: TokenType.NOR, value: "|"});
+      if (char == "!^") tokens.push({type: TokenType.XNOR, value: "^"});
+
     }
     return tokens;
   }
