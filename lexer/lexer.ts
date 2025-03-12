@@ -70,13 +70,28 @@ export class Lexer {
       if (char == "<") tokens.push({type: TokenType.LESS_THAN, value: "<"});
       if (char == ">") tokens.push({type: TokenType.GREATER_THAN, value: ">"});
       if (char == "!") tokens.push({type: TokenType.NOT, value: "!"});
-      if (char == "&&") tokens.push({type: TokenType.AND, value: "&"});
-      if (char == "||") tokens.push({type: TokenType.OR, value: "|"});
+      if (char == "&" && this.source[sourceIndex++] == "&") {
+				tokens.push({type: TokenType.AND, value: "&&"});
+				sourceIndex++;
+			}
+      if (char == "|" && this.source[sourceIndex++] == "|") {
+				tokens.push({type: TokenType.OR, value: "||"});
+				sourceIndex++;
+			}
       if (char == "^") tokens.push({type: TokenType.XOR, value: "^"});
       if (char == "~") tokens.push({type: TokenType.NOR, value: "~"});
-      if (char == "!&") tokens.push({type: TokenType.NAND, value: "&"});
-      if (char == "!|") tokens.push({type: TokenType.NOR, value: "|"});
-      if (char == "!^") tokens.push({type: TokenType.XNOR, value: "^"});
+      if (char == "!" && this.source[sourceIndex++] == "&") {
+				tokens.push({type: TokenType.NAND, value: "!&"});
+				sourceIndex++;
+			}
+      if (char == "!" && this.source[sourceIndex++] == "|") {
+				tokens.push({type: TokenType.NOR, value: "!|"});
+				sourceIndex++;
+			}
+      if (char == "!" && this.source[sourceIndex++] == "^") {
+				tokens.push({type: TokenType.XNOR, value: "!^"});
+				sourceIndex++;
+			}
       
       // Parentheses control
       if (char == "(") tokens.push({type: TokenType.OPEN_PAREN, value: "("});
