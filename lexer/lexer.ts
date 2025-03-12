@@ -1,8 +1,6 @@
 import { isNumber, Token, TokenType, isLetter} from "../global/global.ts";
 
 let sourceIndex: number = 0;
-let testNumber : number;
-let testString : string;
 const tokens: Token[] = [];
 
 export class Lexer {
@@ -30,7 +28,7 @@ export class Lexer {
 
       // Number control
       if (isNumber(char)) {
-        testNumber = parseInt(char);
+        let testNumber : number = parseInt(char);
         while (sourceIndex < this.source.length && isNumber(this.source.charAt(sourceIndex++))) {
             testNumber = testNumber * 10 + parseInt(this.source.charAt(sourceIndex));
             sourceIndex++;
@@ -42,7 +40,7 @@ export class Lexer {
       
       // Double quote strings
       if (char == '"') {
-        testString = "";
+        let testString : string = "";
         sourceIndex++;
         while (sourceIndex < this.source.length && this.source.charAt(sourceIndex++) !== '"') {
           testString += this.source.charAt(sourceIndex);
@@ -52,7 +50,7 @@ export class Lexer {
 
       // Single quote strings
       if (char == "'") {
-        testString = "";
+        let testString : string = "";
         sourceIndex++;
         while (sourceIndex < this.source.length && this.source.charAt(sourceIndex++) !== "'") {
           testString += this.source.charAt(sourceIndex);
@@ -90,7 +88,7 @@ export class Lexer {
       
       // Identifier control
       if (isLetter(char)) {
-        testString = char;
+        let testString : string = char;
         while (sourceIndex < this.source.length && (isLetter(this.source.charAt(sourceIndex++)) || isNumber(this.source.charAt(sourceIndex++)))) {
           testString += this.source.charAt(sourceIndex);
           sourceIndex++;
