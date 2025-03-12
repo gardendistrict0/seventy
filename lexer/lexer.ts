@@ -41,7 +41,6 @@ export class Lexer {
       // Double quote strings
       if (char == '"') {
         let testString : string = "";
-        sourceIndex++;
         while (sourceIndex < this.source.length && this.source.charAt(sourceIndex++) !== '"') {
           testString += this.source.charAt(sourceIndex);
           sourceIndex++;
@@ -51,7 +50,6 @@ export class Lexer {
       // Single quote strings
       if (char == "'") {
         let testString : string = "";
-        sourceIndex++;
         while (sourceIndex < this.source.length && this.source.charAt(sourceIndex++) !== "'") {
           testString += this.source.charAt(sourceIndex);
           sourceIndex++;
