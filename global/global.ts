@@ -33,6 +33,8 @@ export enum TokenType {
     XNOR,
     NOT,
 
+    //TODO: Add Bitwise operators
+
     // TYPE
     STRING,
     INTEGER,
