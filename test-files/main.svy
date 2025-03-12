@@ -1,6 +1,0 @@
-@program.stream = ConsoleStream()
-
-a = 5
-b = 10
-stream.out(a + b)
-@program.terminate
