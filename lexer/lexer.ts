@@ -28,12 +28,13 @@ export class Lexer {
 
       // Number control
       if (isNumber(char)) {
-        let testNumber : number = parseInt(char);
-        while (sourceIndex < this.source.length && isNumber(this.source.charAt(sourceIndex++))) {
-            testNumber = testNumber * 10 + parseInt(this.source.charAt(sourceIndex));
-            sourceIndex++;
+        let testNumber: number = parseInt(char);
+        sourceIndex++;
+        while (sourceIndex < this.source.length && isNumber(this.source.charAt(sourceIndex))) {
+          testNumber = testNumber * 10 + parseInt(this.source.charAt(sourceIndex));
+          sourceIndex++;
         }
-        tokens.push({type: TokenType.INTEGER, value: testNumber.toString()});
+        tokens.push({ type: TokenType.INTEGER, value: testNumber.toString() });
       }
 
       // String control
