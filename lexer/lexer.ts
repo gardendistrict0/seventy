@@ -9,7 +9,7 @@ export class Lexer {
   constructor(private source: string) {
     this.source = source;
   }
-  lex(): Token[] {
+  tokenize(): Token[] {
     for (sourceIndex = 0; sourceIndex < this.source.length; sourceIndex++) {
       const char = this.source.charAt(sourceIndex); //FIXME: idk what is wrong here, deno's having a crashout again
 
