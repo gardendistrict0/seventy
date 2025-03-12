@@ -1,4 +1,4 @@
-import { isNumber, Token, TokenType } from "../global/global.ts";
+import { isNumber, Token, TokenType, isLetter} from "../global/global.ts";
 
 let sourceIndex: number = 0;
 let testNumber : number;
@@ -79,8 +79,29 @@ export class Lexer {
       if (char == "!&") tokens.push({type: TokenType.NAND, value: "&"});
       if (char == "!|") tokens.push({type: TokenType.NOR, value: "|"});
       if (char == "!^") tokens.push({type: TokenType.XNOR, value: "^"});
-
+      
+      // Parentheses control
+      if (char == "(") tokens.push({type: TokenType.OPEN_PAREN, value: "("});
+      if (char == ")") tokens.push({type: TokenType.OPEN_PAREN, value: ")"});
+      if (char == "{") tokens.push({type: TokenType.OPEN_CURLY, value: "{"});
+      if (char == "}") tokens.push({type: TokenType.CLOSE_CURLY, value: "}"});
+      if (char == "[") tokens.push({type: TokenType.OPEN_SQUARE, value: "["});
+      if (char == "]") tokens.push({type: TokenType.CLOSE_SQUARE, value: "]"});
+      
+      // Identifier control
+      if (isLetter(char)) {
+        testString = char;
+        while (sourceIndex < this.source.length && (isLetter(this.source.charAt(sourceIndex++)) || isNumber(this.source.charAt(sourceIndex++)))) {
+          testString += this.source.charAt(sourceIndex);
+          sourceIndex++;
+        }
+        tokens.push({type: TokenType.IDENTIFIER, value: testString});
+      }
+      
+      
     }
+    
+    // Return list of tokens
     return tokens;
   }
 }

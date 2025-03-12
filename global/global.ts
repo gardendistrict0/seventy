@@ -39,9 +39,22 @@ export enum TokenType {
     FLOAT,
     BINARY,
 
+    // PARENTHESIS
+    OPEN_PAREN,
+    CLOSE_PAREN,
+    OPEN_CURLY,
+    CLOSE_CURLY,
+    OPEN_SQUARE,
+    CLOSE_SQUARE,
+
+    // IDENTIFIER
+    IDENTIFIER,
+    PREDEF_ID,
+
     // MISC
     NEWLINE,
-    PRG_CONFIG
+    PRG_CONFIG,
+    ESCAPE
 }
 
 export interface Token {
@@ -51,4 +64,8 @@ export interface Token {
 
 export const isNumber = (char : string) => {
     return !isNaN(parseInt(char));
+}
+
+export const isLetter = (char : string) => {
+    return char.toLowerCase() != char.toUpperCase();
 }
