@@ -3,60 +3,60 @@
 
 export enum TokenType {
     // COMMENT
-    COMMENT,
-    MULTILINE,
+    COMMENT = "COMMENT",
+    MULTILINE = "MULTILINE",
 
     // COMMAND
-    PRINT,
-    PRINTFORM,
+    PRINT = "PRINT",
+    PRINTFORM = "PRINTFORM",
 
     // OPERATOR
-    ADDITION,
-    SUBTRACTION,
-    MULTIPLY,
-    DIVIDE,
-    EQUAL,
-    ACCESS_PERIOD,
+    ADDITION = "ADDITION",
+    SUBTRACTION = "SUBTRACTION",
+    MULTIPLY = "MULTIPLY",
+    DIVIDE = "DIVIDE",
+    EQUAL = "EQUAL",
+    ACCESS_PERIOD = "ACCESS_PERIOD",
 
     // COMPARISON
-    GREATER_THAN,
-    LESS_THAN,
-    GREATER_THAN_EQUAL,
-    LESS_THAN_EQUAL,
-    EQUAL_TO,
-    NOT_EQUAL_TO,
-    AND,
-    OR,
-    XOR,
-    NOR,
-    NAND,
-    XNOR,
-    NOT,
+    GREATER_THAN = "GREATER_THAN",
+    LESS_THAN = "LESS_THAN",
+    GREATER_THAN_EQUAL = "GREATER_THAN_EQUAL",
+    LESS_THAN_EQUAL = "LESS_THAN_EQUAL",
+    EQUAL_TO = "EQUAL_TO",
+    NOT_EQUAL_TO = "NOT_EQUAL_TO",
+    AND = "AND",
+    OR = "OR",
+    XOR = "XOR",
+    NOR = "NOR",
+    NAND = "NAND",
+    XNOR = "XNOR",
+    NOT = "NOT",
 
     //TODO: Add Bitwise operators
 
     // TYPE
-    STRING,
-    INTEGER,
-    FLOAT,
-    BINARY,
+    STRING = "STRING",
+    INTEGER = "INTEGER",
+    FLOAT = "FLOAT",
+    BINARY = "BINARY",
 
     // PARENTHESIS
-    OPEN_PAREN,
-    CLOSE_PAREN,
-    OPEN_CURLY,
-    CLOSE_CURLY,
-    OPEN_SQUARE,
-    CLOSE_SQUARE,
+    OPEN_PAREN = "OPEN_PAREN",
+    CLOSE_PAREN = "CLOSE_PAREN",
+    OPEN_CURLY = "OPEN_CURLY",
+    CLOSE_CURLY = "CLOSE_CURLY",
+    OPEN_SQUARE = "OPEN_SQUARE",
+    CLOSE_SQUARE = "CLOSE_SQUARE",
 
     // IDENTIFIER
-    IDENTIFIER,
-    PREDEF_ID,
+    IDENTIFIER = "IDENTIFIER",
+    PREDEF_ID = "PREDEF_ID",
 
     // MISC
-    NEWLINE,
-    PRG_CONFIG,
-    ESCAPE
+    NEWLINE = "NEWLINE",
+    PRG_CONFIG = "PRG_CONFIG",
+    ESCAPE = "ESCAPE"
 }
 
 export interface Token {

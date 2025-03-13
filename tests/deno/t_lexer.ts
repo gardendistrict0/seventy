@@ -5,6 +5,7 @@ import { TokenType } from "../../global/global.ts";
 Deno.test("Number/Whitespace tests", () => {
     const numwhite = new Lexer("123 456");
     const tokens = numwhite.tokenize();
+    console.log("Number/Whitespace tokens:", tokens);
     assertEquals(tokens, [
         { type: TokenType.INTEGER, value: "123" },
         { type: TokenType.INTEGER, value: "456" }
@@ -14,6 +15,7 @@ Deno.test("Number/Whitespace tests", () => {
 Deno.test("String tests", () => {
     const strings = new Lexer('"Hello, World!"');
     const tokens = strings.tokenize();
+    console.log("String tokens:", tokens);
     assertEquals(tokens, [
         { type: TokenType.STRING, value: "Hello, World!" }
     ]);
@@ -22,6 +24,7 @@ Deno.test("String tests", () => {
 Deno.test("Operator tests", () => {
     const operator = new Lexer("+-*/=.");
     const tokens = operator.tokenize();
+    console.log("Operator tokens:", tokens);
     assertEquals(tokens, [
         { type: TokenType.ADDITION, value: "+" },
         { type: TokenType.SUBTRACTION, value: "-" },
@@ -35,6 +38,7 @@ Deno.test("Operator tests", () => {
 Deno.test("Comment tests", () => {
     const comment = new Lexer("# This is a comment\n123");
     const tokens = comment.tokenize();
+    console.log("Comment tokens:", tokens);
     assertEquals(tokens, [
         { type: TokenType.NEWLINE, value: "\n" },
         { type: TokenType.INTEGER, value: "123" }
