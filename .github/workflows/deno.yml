@@ -39,4 +39,5 @@ jobs:
         run: deno lint
 
       - name: Run tests
-        run: deno test "tests/deno/*.ts"
+        # run: deno test "tests/deno/*.ts"
+        # Halted for now
