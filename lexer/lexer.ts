@@ -1,20 +1,20 @@
 import { isNumber, Token, TokenType, isLetter} from "../global/global.ts";
 
-let sourceIndex: number = 0;
-const tokens: Token[] = [];
-
+export let sourceIndex: number = 0;
 export class Lexer {
+  private tokens : Token[] = [];
   constructor(private source: string) {
     this.source = source;
   }
   tokenize(): Token[] {
+    this.tokens.length = 0;
     for (sourceIndex = 0; sourceIndex < this.source.length; sourceIndex++) {
       const char = this.source.charAt(sourceIndex); //FIXME: idk what is wrong here, deno's having a crashout again
 
       // Whitespace control
       if (char == " ") continue;
       if (char == "\t") continue;
-      if (char == "\n") tokens.push({ type: TokenType.NEWLINE, value: "\n" });
+      if (char == "\n") this.tokens.push({ type: TokenType.NEWLINE, value: "\n" });
       //TODO: Add more whitespaces later
 
       // Comment control
@@ -34,7 +34,7 @@ export class Lexer {
           testNumber = testNumber * 10 + parseInt(this.source.charAt(sourceIndex));
           sourceIndex++;
         }
-        tokens.push({ type: TokenType.INTEGER, value: testNumber.toString() });
+        this.tokens.push({ type: TokenType.INTEGER, value: testNumber.toString() });
       }
 
       // String control
@@ -57,50 +57,57 @@ export class Lexer {
         }
       }
 
-      // Operator control
-      if (char == ".") tokens.push({type: TokenType.ACCESS_PERIOD, value: "."});
-      if (char == "+") tokens.push({type: TokenType.ADDITION, value: "+"});
-      if (char == "-") tokens.push({type: TokenType.SUBTRACTION, value: "-"});
-      if (char == "*") tokens.push({type: TokenType.MULTIPLY, value: "*"});
-      if (char == "/") tokens.push({type: TokenType.DIVIDE, value: "/"});
-      if (char == "=") tokens.push({type: TokenType.EQUAL, value: "="});
 
-      // Comparison control
-      if (char == "<") tokens.push({type: TokenType.LESS_THAN, value: "<"});
-      if (char == ">") tokens.push({type: TokenType.GREATER_THAN, value: ">"});
-      if (char == "!") tokens.push({type: TokenType.NOT, value: "!"});
-      if (char == "^") tokens.push({type: TokenType.XOR, value: "^"});
-      if (char == "~") tokens.push({type: TokenType.NOR, value: "~"});
-
-      // Multi-character comparison control
+      // Multi character comparison control (placed before single character comparison control for dominance)
       if (char == "&" && this.source[sourceIndex++] == "&") {
-				tokens.push({type: TokenType.AND, value: "&&"});
+        this.tokens.push({type: TokenType.AND, value: "&&"});
 				sourceIndex++;
 			}
       if (char == "|" && this.source[sourceIndex++] == "|") {
-				tokens.push({type: TokenType.OR, value: "||"});
+        this.tokens.push({type: TokenType.OR, value: "||"});
 				sourceIndex++;
 			}
       if (char == "!" && this.source[sourceIndex++] == "&") {
-				tokens.push({type: TokenType.NAND, value: "!&"});
+        this.tokens.push({type: TokenType.NAND, value: "!&"});
 				sourceIndex++;
 			}
       if (char == "!" && this.source[sourceIndex++] == "|") {
-				tokens.push({type: TokenType.NOR, value: "!|"});
+        this.tokens.push({type: TokenType.NOR, value: "!|"});
 				sourceIndex++;
 			}
       if (char == "!" && this.source[sourceIndex++] == "^") {
-				tokens.push({type: TokenType.XNOR, value: "!^"});
+        this.tokens.push({type: TokenType.XNOR, value: "!^"});
 				sourceIndex++;
 			}
+      if (char == "=" && this.source[sourceIndex++] == "=") {
+        this.tokens.push({type: TokenType.EQUAL_TO, value: "=="});
+        sourceIndex++;
+      }
+      if (char == "!" && this.source[sourceIndex++] == "=") {
+        this.tokens.push({type: TokenType.NOT_EQUAL_TO, value: "!="});
+        sourceIndex++;
+      }
+      // Operator control
+      if (char == ".") this.tokens.push({type: TokenType.ACCESS_PERIOD, value: "."});
+      if (char == "+") this.tokens.push({type: TokenType.ADDITION, value: "+"});
+      if (char == "-") this.tokens.push({type: TokenType.SUBTRACTION, value: "-"});
+      if (char == "*") this.tokens.push({type: TokenType.MULTIPLY, value: "*"});
+      if (char == "/") this.tokens.push({type: TokenType.DIVIDE, value: "/"});
+      if (char == "=") this.tokens.push({type: TokenType.EQUAL, value: "="});
 
+      // Comparison control
+      if (char == "<") this.tokens.push({type: TokenType.LESS_THAN, value: "<"});
+      if (char == ">") this.tokens.push({type: TokenType.GREATER_THAN, value: ">"});
+      if (char == "!") this.tokens.push({type: TokenType.NOT, value: "!"});
+      if (char == "^") this.tokens.push({type: TokenType.XOR, value: "^"});
+      if (char == "~") this.tokens.push({type: TokenType.NOR, value: "~"});
       // Parentheses control
-      if (char == "(") tokens.push({type: TokenType.OPEN_PAREN, value: "("});
-      if (char == ")") tokens.push({type: TokenType.OPEN_PAREN, value: ")"});
-      if (char == "{") tokens.push({type: TokenType.OPEN_CURLY, value: "{"});
-      if (char == "}") tokens.push({type: TokenType.CLOSE_CURLY, value: "}"});
-      if (char == "[") tokens.push({type: TokenType.OPEN_SQUARE, value: "["});
-      if (char == "]") tokens.push({type: TokenType.CLOSE_SQUARE, value: "]"});
+      if (char == "(") this.tokens.push({type: TokenType.OPEN_PAREN, value: "("});
+      if (char == ")") this.tokens.push({type: TokenType.OPEN_PAREN, value: ")"});
+      if (char == "{") this.tokens.push({type: TokenType.OPEN_CURLY, value: "{"});
+      if (char == "}") this.tokens.push({type: TokenType.CLOSE_CURLY, value: "}"});
+      if (char == "[") this.tokens.push({type: TokenType.OPEN_SQUARE, value: "["});
+      if (char == "]") this.tokens.push({type: TokenType.CLOSE_SQUARE, value: "]"});
       
       // Identifier control
       if (isLetter(char)) {
@@ -109,13 +116,13 @@ export class Lexer {
           testString += this.source.charAt(sourceIndex);
           sourceIndex++;
         }
-        tokens.push({type: TokenType.IDENTIFIER, value: testString});
+        this.tokens.push({type: TokenType.IDENTIFIER, value: testString});
       }
       
       
     }
     
     // Return list of tokens
-    return tokens;
+    return this.tokens;
   }
 }
