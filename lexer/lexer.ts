@@ -1,127 +1,126 @@
-import { isNumber, Token, TokenType, isLetter} from "../global/global.ts";
+import { isNumber, Token, TokenType, isLetter } from "../global/global.ts";
 
 export let sourceIndex: number = 0;
 export class Lexer {
-  private tokens : Token[] = [];
+  private tokens: Token[] = [];
   constructor(private source: string) {
     this.source = source;
   }
+
   tokenize(): Token[] {
     this.tokens.length = 0;
     for (sourceIndex = 0; sourceIndex < this.source.length; sourceIndex++) {
-      const char = this.source.charAt(sourceIndex); //FIXME: idk what is wrong here, deno's having a crashout again
+      const char = this.source.charAt(sourceIndex);
 
       // Whitespace control
-      if (char == " ") continue;
-      if (char == "\t") continue;
-      if (char == "\n") this.tokens.push({ type: TokenType.NEWLINE, value: "\n" });
-      //TODO: Add more whitespaces later
+      if (char == " " || char == "\t") continue;
+      if (char == "\n") {
+        this.tokens.push({ type: TokenType.NEWLINE, value: "\n" });
+        continue;
+      }
 
       // Comment control
       if (char == "#") {
         while (sourceIndex < this.source.length && this.source.charAt(sourceIndex) !== "\n") {
-            sourceIndex++;
-          }
-          // Don't push because it's a comment (duh?)
+          sourceIndex++;
+        }
+        continue; // Don't push because it's a comment (duh?)
       }
-      //TODO: Add multiline comments later
 
       // Number control
       if (isNumber(char)) {
         let testNumber: number = parseInt(char);
-        sourceIndex++;
-        while (sourceIndex < this.source.length && isNumber(this.source.charAt(sourceIndex))) {
-          testNumber = testNumber * 10 + parseInt(this.source.charAt(sourceIndex));
+        while (sourceIndex + 1 < this.source.length && isNumber(this.source.charAt(sourceIndex + 1))) {
           sourceIndex++;
+          testNumber = testNumber * 10 + parseInt(this.source.charAt(sourceIndex));
         }
         this.tokens.push({ type: TokenType.INTEGER, value: testNumber.toString() });
+        continue; // Move on after finding a number
       }
 
       // String control
-      
-      // Double quote strings
       if (char == '"') {
-        let testString : string = "";
-        while (sourceIndex < this.source.length && this.source.charAt(sourceIndex++) !== '"') {
+        let testString: string = "";
+        sourceIndex++; // Skip past the opening quote
+        while (sourceIndex < this.source.length && this.source.charAt(sourceIndex) !== '"') {
           testString += this.source.charAt(sourceIndex);
           sourceIndex++;
         }
+        this.tokens.push({ type: TokenType.STRING, value: testString });
+        continue;
       }
 
-      // Single quote strings
       if (char == "'") {
-        let testString : string = "";
-        while (sourceIndex < this.source.length && this.source.charAt(sourceIndex++) !== "'") {
+        let testString: string = "";
+        sourceIndex++; // Skip past the opening quote
+        while (sourceIndex < this.source.length && this.source.charAt(sourceIndex) !== "'") {
           testString += this.source.charAt(sourceIndex);
           sourceIndex++;
         }
+        this.tokens.push({ type: TokenType.STRING, value: testString });
+        continue;
       }
 
+      // Multi-character operators control
+      if (char == "&" && this.source.charAt(sourceIndex + 1) == "&") {
+        this.tokens.push({ type: TokenType.AND, value: "&&" });
+        sourceIndex++; // Skip the next character
+        continue;
+      }
 
-      // Multi character comparison control (placed before single character comparison control for dominance)
-      if (char == "&" && this.source[sourceIndex++] == "&") {
-        this.tokens.push({type: TokenType.AND, value: "&&"});
-				sourceIndex++; sourceIndex++;
-			}
-      if (char == "|" && this.source[sourceIndex++] == "|") {
-        this.tokens.push({type: TokenType.OR, value: "||"});
-				sourceIndex++; sourceIndex++;
-			}
-      if (char == "!" && this.source[sourceIndex++] == "&") {
-        this.tokens.push({type: TokenType.NAND, value: "!&"});
-				sourceIndex++; sourceIndex++;
-			}
-      if (char == "!" && this.source[sourceIndex++] == "|") {
-        this.tokens.push({type: TokenType.NOR, value: "!|"});
-				sourceIndex++; sourceIndex++;
-			}
-      if (char == "!" && this.source[sourceIndex++] == "^") {
-        this.tokens.push({type: TokenType.XNOR, value: "!^"});
-				sourceIndex++; sourceIndex++;
-			}
-      if (char == "=" && this.source[sourceIndex++] == "=") {
-        this.tokens.push({type: TokenType.EQUAL_TO, value: "=="});
-        sourceIndex++; sourceIndex++;
+      if (char == "|" && this.source.charAt(sourceIndex + 1) == "|") {
+        this.tokens.push({ type: TokenType.OR, value: "||" });
+        sourceIndex++; // Skip the next character
+        continue;
       }
-      if (char == "!" && this.source[sourceIndex++] == "=") {
-        this.tokens.push({type: TokenType.NOT_EQUAL_TO, value: "!="});
-        sourceIndex++; sourceIndex++;
+
+      if (char == "!" && this.source.charAt(sourceIndex + 1) == "=") {
+        this.tokens.push({ type: TokenType.NOT_EQUAL_TO, value: "!=" });
+        sourceIndex++; // Skip the next character
+        continue;
       }
+
+      if (char == "=" && this.source.charAt(sourceIndex + 1) == "=") {
+        this.tokens.push({ type: TokenType.EQUAL_TO, value: "==" });
+        sourceIndex++; // Skip the next character
+        continue;
+      }
+
       // Operator control
-      if (char == ".") this.tokens.push({type: TokenType.ACCESS_PERIOD, value: "."});
-      if (char == "+") this.tokens.push({type: TokenType.ADDITION, value: "+"});
-      if (char == "-") this.tokens.push({type: TokenType.SUBTRACTION, value: "-"});
-      if (char == "*") this.tokens.push({type: TokenType.MULTIPLY, value: "*"});
-      if (char == "/") this.tokens.push({type: TokenType.DIVIDE, value: "/"});
-      if (char == "=") this.tokens.push({type: TokenType.EQUAL, value: "="});
+      if (char == ".") this.tokens.push({ type: TokenType.ACCESS_PERIOD, value: "." });
+      if (char == "+") this.tokens.push({ type: TokenType.ADDITION, value: "+" });
+      if (char == "-") this.tokens.push({ type: TokenType.SUBTRACTION, value: "-" });
+      if (char == "*") this.tokens.push({ type: TokenType.MULTIPLY, value: "*" });
+      if (char == "/") this.tokens.push({ type: TokenType.DIVIDE, value: "/" });
+      if (char == "=") this.tokens.push({ type: TokenType.EQUAL, value: "=" });
 
       // Comparison control
-      if (char == "<") this.tokens.push({type: TokenType.LESS_THAN, value: "<"});
-      if (char == ">") this.tokens.push({type: TokenType.GREATER_THAN, value: ">"});
-      if (char == "!") this.tokens.push({type: TokenType.NOT, value: "!"});
-      if (char == "^") this.tokens.push({type: TokenType.XOR, value: "^"});
-      if (char == "~") this.tokens.push({type: TokenType.NOR, value: "~"});
+      if (char == "<") this.tokens.push({ type: TokenType.LESS_THAN, value: "<" });
+      if (char == ">") this.tokens.push({ type: TokenType.GREATER_THAN, value: ">" });
+      if (char == "!") this.tokens.push({ type: TokenType.NOT, value: "!" });
+      if (char == "^") this.tokens.push({ type: TokenType.XOR, value: "^" });
+      if (char == "~") this.tokens.push({ type: TokenType.NOR, value: "~" });
+
       // Parentheses control
-      if (char == "(") this.tokens.push({type: TokenType.OPEN_PAREN, value: "("});
-      if (char == ")") this.tokens.push({type: TokenType.OPEN_PAREN, value: ")"});
-      if (char == "{") this.tokens.push({type: TokenType.OPEN_CURLY, value: "{"});
-      if (char == "}") this.tokens.push({type: TokenType.CLOSE_CURLY, value: "}"});
-      if (char == "[") this.tokens.push({type: TokenType.OPEN_SQUARE, value: "["});
-      if (char == "]") this.tokens.push({type: TokenType.CLOSE_SQUARE, value: "]"});
-      
+      if (char == "(") this.tokens.push({ type: TokenType.OPEN_PAREN, value: "(" });
+      if (char == ")") this.tokens.push({ type: TokenType.CLOSE_PAREN, value: ")" });
+      if (char == "{") this.tokens.push({ type: TokenType.OPEN_CURLY, value: "{" });
+      if (char == "}") this.tokens.push({ type: TokenType.CLOSE_CURLY, value: "}" });
+      if (char == "[") this.tokens.push({ type: TokenType.OPEN_SQUARE, value: "[" });
+      if (char == "]") this.tokens.push({ type: TokenType.CLOSE_SQUARE, value: "]" });
+
       // Identifier control
       if (isLetter(char)) {
-        let testString : string = char;
-        while (sourceIndex < this.source.length && (isLetter(this.source.charAt(sourceIndex++)) || isNumber(this.source.charAt(sourceIndex++)))) {
-          testString += this.source.charAt(sourceIndex);
+        let testString: string = char;
+        while (sourceIndex + 1 < this.source.length && (isLetter(this.source.charAt(sourceIndex + 1)) || isNumber(this.source.charAt(sourceIndex + 1)))) {
           sourceIndex++;
+          testString += this.source.charAt(sourceIndex);
         }
-        this.tokens.push({type: TokenType.IDENTIFIER, value: testString});
+        this.tokens.push({ type: TokenType.IDENTIFIER, value: testString });
+        continue;
       }
-      
-      
     }
-    
+
     // Return list of tokens
     return this.tokens;
   }
