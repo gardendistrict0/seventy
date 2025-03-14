@@ -28,7 +28,7 @@
 3. Open Command Prompt and run:
     ```bash
      seventy --version 
-    ```. 
+    ```
 If you got the version, congratulations, you have installed Seventy!
 
 #### Experimental version (recomended for contributers)
