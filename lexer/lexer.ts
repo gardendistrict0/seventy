@@ -61,31 +61,31 @@ export class Lexer {
       // Multi character comparison control (placed before single character comparison control for dominance)
       if (char == "&" && this.source[sourceIndex++] == "&") {
         this.tokens.push({type: TokenType.AND, value: "&&"});
-				sourceIndex++;
+				sourceIndex++; sourceIndex++;
 			}
       if (char == "|" && this.source[sourceIndex++] == "|") {
         this.tokens.push({type: TokenType.OR, value: "||"});
-				sourceIndex++;
+				sourceIndex++; sourceIndex++;
 			}
       if (char == "!" && this.source[sourceIndex++] == "&") {
         this.tokens.push({type: TokenType.NAND, value: "!&"});
-				sourceIndex++;
+				sourceIndex++; sourceIndex++;
 			}
       if (char == "!" && this.source[sourceIndex++] == "|") {
         this.tokens.push({type: TokenType.NOR, value: "!|"});
-				sourceIndex++;
+				sourceIndex++; sourceIndex++;
 			}
       if (char == "!" && this.source[sourceIndex++] == "^") {
         this.tokens.push({type: TokenType.XNOR, value: "!^"});
-				sourceIndex++;
+				sourceIndex++; sourceIndex++;
 			}
       if (char == "=" && this.source[sourceIndex++] == "=") {
         this.tokens.push({type: TokenType.EQUAL_TO, value: "=="});
-        sourceIndex++;
+        sourceIndex++; sourceIndex++;
       }
       if (char == "!" && this.source[sourceIndex++] == "=") {
         this.tokens.push({type: TokenType.NOT_EQUAL_TO, value: "!="});
-        sourceIndex++;
+        sourceIndex++; sourceIndex++;
       }
       // Operator control
       if (char == ".") this.tokens.push({type: TokenType.ACCESS_PERIOD, value: "."});
