@@ -45,8 +45,10 @@ deno compile --allow-read --allow-write --allow-run -o seventy main/seventy.ts
 
 4. To ensure everything worked, run:
 ```bash
-seventy --dev
+seventy --version
 ```
+
+If you got the version, congratulations, you have installed the experimental Seventy!
 
 ---
 
