@@ -23,7 +23,7 @@
 
 ### Windows
 #### Stable version (recomended for casual-use):
-1. Go to the [Releases Tab](https://github.com/gardendistrict0/seventy/releases) and get the latest version, and install the executable with *'seventy-...-x64.exe'*
+1. Go to the [Releases Tab](https://github.com/gardendistrict0/seventy/releases) and get the latest version, and install the executable with *'seventy-...-x64-win.exe'*
 2. Run the file you just downloaded and follow the on screen prompts to set it up
 3. Open Command Prompt and run:
     ```bash
@@ -40,7 +40,7 @@ git clone https://github.com/gardendistrict0/seventy.git
 
 3. Compile Seventy using Deno:
 ```bash
-deno compile --allow-read --allow-write --allow-run -o seventy windows-exp/cmd.ts
+deno compile --allow-read --allow-write --allow-run -o seventy main/seventy.ts
 ```
 
 4. To ensure everything worked, run:
