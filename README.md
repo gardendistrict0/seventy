@@ -18,9 +18,6 @@
 
 ## How to install
 
-> ⚠️ Warning: 
-> Seventy will only be available in Windows for now. Linux and MacOS support will be added in version 1.2.0
-
 ### Windows
 #### Stable version (recomended for casual-use):
 1. Go to the [Releases Tab](https://github.com/gardendistrict0/seventy/releases) and get the latest version, and install the executable with *'seventy-...-x64-win.exe'*
