@@ -1,4 +1,4 @@
-<img src="docs/assets/seventy.png" width="500" />
+<img src="docs/assets/seventy.png" width="300" />
 
 # Seventy
 
