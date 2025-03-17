@@ -124,4 +124,7 @@ export class Lexer {
     // Return list of tokens
     return this.tokens;
   }
+  returnTokens(): Token[] {
+    return this.tokens;
+  }
 }
