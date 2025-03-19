@@ -11,7 +11,7 @@ Supported arguments:
                                   Tokenizes the given file
 `;
 
-const VERSION : string = "Seventy v0.1.0-alpha\n";
+const VERSION : string = "Seventy v0.1.0-beta\n";
 let _silent : boolean = false;
 
 function silentCommand() {
