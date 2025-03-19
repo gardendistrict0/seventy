@@ -3,6 +3,7 @@
 # Seventy
 
 ![](https://img.shields.io/badge/license-Zlib%2Flibpng-blue)
+![](https://img.shields.io/github/v/release/gardendistrict0/seventy?display_name=release&style=flat&link=https%3A%2F%2Fgithub.com%2Fgardendistrict0%2Fseventy%2Freleases)
 ![](https://img.shields.io/github/last-commit/gardendistrict0/seventy)
 ![](https://img.shields.io/github/repo-size/gardendistrict0/seventy)
 ![](https://img.shields.io/github/issues/gardendistrict0/seventy)
