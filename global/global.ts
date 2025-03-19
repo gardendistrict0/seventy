@@ -59,6 +59,30 @@ export enum TokenType {
     ESCAPE = "ESCAPE"
 }
 
+const enum PredefinedIdentifiers {
+    // Functions
+    print = "print",
+
+    // Types
+    string = "string",
+    integer = "int",
+    float = "fl",
+    boolean = "bool",
+    binary = "bin",
+    free = "free",
+
+    // Constants
+    pi = "pi",
+    e = "e",
+    true = "true",
+    false = "false",
+    never = "never",
+    undefined = "undefined",
+    infinity = "infinity",
+
+    // Keywords
+}
+
 export interface Token {
     type: TokenType;
     value: string;
