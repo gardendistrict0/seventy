@@ -59,6 +59,7 @@ export enum TokenType {
     ESCAPE = "ESCAPE"
 }
 
+// deno-lint-ignore no-unused-vars
 const enum PredefinedIdentifiers {
     // Functions
     print = "print",
@@ -95,3 +96,7 @@ export const isNumber = (char : string) => {
 export const isLetter = (char : string) => {
     return char.toLowerCase() != char.toUpperCase();
 }
+
+// Parser.ts
+//--------------------------------------------------------------------------------------------------------------
+
