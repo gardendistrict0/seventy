@@ -185,12 +185,21 @@ export function p_ArrayAccess(array: string, id: string) {
     }
 }
 
+//deno-lint-ignore no-explicit-any
 export function p_CUSTOM(data: string, body?: any) {
     return {
         type: "CUSTOM",
         name: data,
         body: body,
         raw: `${data}`
+    }
+}
+
+export function p_Program(data: string[]) {
+    return {
+        type: "Program",
+        body: data,
+        raw: `${data.join("\n")}`
     }
 }
 
