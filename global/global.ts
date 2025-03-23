@@ -185,3 +185,12 @@ export function p_ArrayAccess(array: string, id: string) {
     }
 }
 
+export function p_CUSTOM(data: string, body?: any) {
+    return {
+        type: "CUSTOM",
+        name: data,
+        body: body,
+        raw: `${data}`
+    }
+}
+
