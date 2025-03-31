@@ -18,6 +18,11 @@ export enum TokenType {
     EQUAL = "EQUAL",
     ACCESS_PERIOD = "ACCESS_PERIOD",
 
+    // UNARY
+    INCREMENT = "INCREMENT",
+    DECREMENT = "DECREMENT",
+
+
     // COMPARISON
     GREATER_THAN = "GREATER_THAN",
     LESS_THAN = "LESS_THAN",
@@ -119,8 +124,7 @@ export function p_IdentifierPredef(data: string) {
     };
 }
 
-// deno-lint-ignore no-explicit-any
-export function p_BinaryExpression(l_data: string, op: string, r_data: any) {
+export function p_BinaryExpression(l_data: string, op: string, r_data: string) {
     return {
         type: "BinaryExpression",
         left: l_data,

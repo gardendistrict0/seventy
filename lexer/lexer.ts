@@ -109,6 +109,16 @@ export class Lexer {
       if (char == "[") this.tokens.push({ type: TokenType.OPEN_SQUARE, value: "[" });
       if (char == "]") this.tokens.push({ type: TokenType.CLOSE_SQUARE, value: "]" });
 
+      // Unary control
+      if (char == "+" && this.source.charAt(sourceIndex + 1) == "+") {
+        this.tokens.push({ type: TokenType.INCREMENT, value: "++" });
+        sourceIndex++;
+      }
+      if (char == "-" && this.source.charAt(sourceIndex + 1) == "-") {
+        this.tokens.push({ type: TokenType.DECREMENT, value: "--" });
+        sourceIndex++;
+      }
+      
       // Identifier control
       if (isLetter(char)) {
         let testString: string = char;

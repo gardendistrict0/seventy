@@ -1,4 +1,4 @@
-import { p_BinaryExpression, Token, TokenType,  } from "../global/global.ts";
+import { p_BinaryExpression, p_UnaryExpression, Token, TokenType,  } from "../global/global.ts";
   
 
 export class Parser{
@@ -28,6 +28,10 @@ export class Parser{
                 this.AST.body.push(p_BinaryExpression(l_token.value, "*", r_token.value));
             } else if (token.type === TokenType.DIVIDE) {
                 this.AST.body.push(p_BinaryExpression(l_token.value, "/", r_token.value));
+            } else if (token.type === TokenType.INCREMENT) {
+                this.AST.body.push(p_UnaryExpression("++", l_token.value));
+            } else if (token.type === TokenType.DECREMENT) {
+                this.AST.body.push(p_UnaryExpression("--", l_token.value));
             }
             index++;
         }
