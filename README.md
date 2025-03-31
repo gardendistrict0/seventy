@@ -58,11 +58,15 @@ If you got the version, congratulations, you have installed the experimental Sev
 
 ### MacOS
 #### Stable version (recommended for casual use):
-1. Go to the [Releases Tab](https://github.com/gardendistrict0/seventy/releases) and get the latest version, and install the disk image with *'seventy-...-macOS.dmg'*
-2. Run the file you just downloaded and follow the on-screen prompts to set it up
-3. Open Terminal and enter the command:
+1. Install [Homebrew](brew.sh) if you haven't already
+2. Install seventy using the following commands
 ```bash
-    seventy --version
+brew tap gardendistrict0/seventy
+brew install seventy
+```
+3. To ensure it works, run:
+```bash
+seventy -- version
 ```
 If you got the version, congratulations, you have installed Seventy!
 
@@ -84,3 +88,5 @@ deno compile --allow-read --allow-write --allow-run -o seventy ./main/seventy.ts
 ```
 
 If you got the version, congratulations, you have installed the experimental Seventy!
+
+---
