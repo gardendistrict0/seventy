@@ -28,8 +28,6 @@ export class Parser{
                 this.AST.body.push(p_BinaryExpression(l_token.value, "*", r_token.value));
             } else if (token.type === TokenType.DIVIDE) {
                 this.AST.body.push(p_BinaryExpression(l_token.value, "/", r_token.value));
-            } if (token.type === TokenType.EQUAL) {
-                
             }
             index++;
         }
