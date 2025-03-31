@@ -1,4 +1,4 @@
-import { isNumber, Token, TokenType, isLetter } from "../global/global.ts";
+import { isNumber, Token, TokenType, isLetter, PredefinedIdentifiers } from "../global/global.ts";
 
 export let sourceIndex: number = 0;
 export class Lexer {
@@ -116,8 +116,12 @@ export class Lexer {
           sourceIndex++;
           testString += this.source.charAt(sourceIndex);
         }
-        this.tokens.push({ type: TokenType.IDENTIFIER, value: testString });
-        continue;
+        if (PredefinedIdentifiers.includes(testString)) {
+          this.tokens.push({ type: TokenType.PREDEF_ID, value: testString });
+          continue;
+        } else {
+          this.tokens.push({ type: TokenType.IDENTIFIER, value: testString });
+        }
       }
     }
 

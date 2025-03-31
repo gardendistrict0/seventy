@@ -19,6 +19,7 @@ export class Parser{
             const token = this.Tokens[index];
             const l_token = this.Tokens[index - 1];
             const r_token = this.Tokens[index + 1];
+            // Binary expression
             if (token.type === TokenType.ADDITION) {
                 this.AST.body.push(p_BinaryExpression(l_token.value, "+", r_token.value));
             } else if (token.type === TokenType.SUBTRACTION) {
@@ -27,6 +28,8 @@ export class Parser{
                 this.AST.body.push(p_BinaryExpression(l_token.value, "*", r_token.value));
             } else if (token.type === TokenType.DIVIDE) {
                 this.AST.body.push(p_BinaryExpression(l_token.value, "/", r_token.value));
+            } if (token.type === TokenType.EQUAL) {
+                
             }
             index++;
         }

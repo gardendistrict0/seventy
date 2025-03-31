@@ -59,30 +59,24 @@ export enum TokenType {
     ESCAPE = "ESCAPE"
 }
 
-// deno-lint-ignore no-unused-vars
-const enum PredefinedIdentifiers {
-    // Functions
-    print = "print",
+export const PredefinedIdentifiers : string[] = [
+    "print",
+    "string",
+    "int",
+    "fl",
+    "bool",
+    "bin",
+    "free",
+    "pi",
+    "e",
+    "true",
+    "false",
+    "never",
+    "undefined",
+    "infinity",
+    "def"
+];
 
-    // Types
-    string = "string",
-    integer = "int",
-    float = "fl",
-    boolean = "bool",
-    binary = "bin",
-    free = "free",
-
-    // Constants
-    pi = "pi",
-    e = "e",
-    true = "true",
-    false = "false",
-    never = "never",
-    undefined = "undefined",
-    infinity = "infinity",
-
-    // Keywords
-}
 
 export interface Token {
     type: TokenType;
@@ -182,6 +176,16 @@ export function p_ArrayAccess(array: string, id: string) {
         left: array,
         right: id,
         raw: `${array}[${id}]`
+    }
+}
+
+export function p_VariableDeclaration(variable: string, varvalue: string, STATICtype?: string) {
+    return {
+        type: "VariableDeclaration",
+        name: variable,
+        staticType: STATICtype !== 'undefined' ? STATICtype : null,
+        value: varvalue,
+        raw: STATICtype !== 'undefined' ? `${variable} : ${STATICtype} = ${varvalue}` : `${variable} = ${varvalue}`
     }
 }
 
