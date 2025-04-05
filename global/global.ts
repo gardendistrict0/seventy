@@ -99,8 +99,8 @@ export const isLetter = (char : string) => {
 // Parser.ts
 //--------------------------------------------------------------------------------------------------------------
 
-// deno-lint-ignore no-explicit-any
-export function p_Literal(data: any) {
+
+export function p_Literal(data: string) { // PARAMETER MUST BE STRING OR TYPESCRIPT WILL HAVE A TANTRUM
     return {
       type: "Literal",
       value: data,
@@ -135,8 +135,7 @@ export function p_BinaryExpression(l_data: string, op: string, r_data: string) {
     }
 }
 
-// deno-lint-ignore no-explicit-any
-export function p_UnaryExpression(op: string, data: any) {
+export function p_UnaryExpression(op: string, data: string) { // SAME CASE HERE
     return {
         type: "UnaryExpression",
         operator: op,
@@ -145,8 +144,7 @@ export function p_UnaryExpression(op: string, data: any) {
     }
 }
 
-// deno-lint-ignore no-explicit-any
-export function p_AssignmentExpression(id: string, op: string, data: any) {
+export function p_AssignmentExpression(id: string, op: string, data: string) { // HERE TOO
     return {
         type: "AssignmentExpression",
         left: id,
@@ -193,7 +191,6 @@ export function p_VariableDeclaration(variable: string, varvalue: string, STATIC
     }
 }
 
-//deno-lint-ignore no-explicit-any
 export function p_CUSTOM(data: string, body?: any) {
     return {
         type: "CUSTOM",
