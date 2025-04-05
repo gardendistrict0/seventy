@@ -191,7 +191,7 @@ export function p_VariableDeclaration(variable: string, varvalue: string, STATIC
     }
 }
 
-export function p_CUSTOM(data: string, body?: any) {
+export function p_CUSTOM(data: string, body?: Record<string, unknown>) {
     return {
         type: "CUSTOM",
         name: data,
