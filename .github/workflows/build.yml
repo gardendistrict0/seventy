@@ -1,0 +1,34 @@
+name: Build and Store Artifacts
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Deno for compilation
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.36.0
+
+
+      - name: Run build script
+        run: |
+          deno compile --target x86_64-pc-windows-msvc --output bin/seventy-win main/seventy.ts
+          deno compile --target x86_64-apple-darwin --output bin/seventy-mac main/seventy.ts
+          deno compile --target aarch64-apple-darwin --output bin/seventy-mac-arm main/seventy.ts
+          deno compile --target x86_64-unknown-linux-gnu --output bin/seventy-linux main/seventy.ts
+          deno compile --target aarch64-unknown-linux-gnu --output bin/seventy-linux-arm main/seventy.ts
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-artifacts
+          path: bin/
