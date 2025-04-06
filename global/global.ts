@@ -72,8 +72,6 @@ export const PredefinedIdentifiers : string[] = [
     "bool",
     "bin",
     "free",
-    "pi",
-    "e",
     "true",
     "false",
     "never",
