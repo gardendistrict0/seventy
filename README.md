@@ -10,6 +10,8 @@
 ![](https://img.shields.io/github/issues-pr/gardendistrict0/seventy)
 ![](https://img.shields.io/github/contributors/gardendistrict0/seventy)
 ![](https://img.shields.io/github/commit-activity/m/gardendistrict0/seventy)
+![Build](https://img.shields.io/github/actions/workflow/status/gardendistrict0/seventy/build.yml)
+
 ---
 
 > Seventy is currently in alpha stages and is ***not*** available for use in any form of project. Anything currently in this install guide is ***incomplete*** and is not correct.
