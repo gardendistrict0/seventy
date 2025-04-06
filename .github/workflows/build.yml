@@ -18,17 +18,17 @@ jobs:
 
       - name: Compile project for multiple platforms
         run: |
-          echo "Compiling for Windows (x86_64)"
-          deno compile --target x86_64-pc-windows-msvc --output bin/seventy-win main/seventy.ts
-          
-          echo "Compiling for macOS (x86_64)"
-          deno compile --target x86_64-apple-darwin --output bin/seventy-mac main/seventy.ts
-          
-          echo "Compiling for macOS (ARM)"
-          deno compile --target aarch64-apple-darwin --output bin/seventy-mac-arm main/seventy.ts
-          
-          echo "Compiling for Linux (x86_64)"
-          deno compile --target x86_64-unknown-linux-gnu --output bin/seventy-linux main/seventy.ts
+            echo "Compiling for Windows (x86_64)"
+            deno compile --allow-all --target x86_64-pc-windows-msvc --output bin/seventy-win main/seventy.ts
+            
+            echo "Compiling for macOS (x86_64)"
+            deno compile --allow-all --target x86_64-apple-darwin --output bin/seventy-mac main/seventy.ts
+            
+            echo "Compiling for macOS (ARM)"
+            deno compile --allow-all --target aarch64-apple-darwin --output bin/seventy-mac-arm main/seventy.ts
+            
+            echo "Compiling for Linux (x86_64)"
+            deno compile --allow-all --target x86_64-unknown-linux-gnu --output bin/seventy-linux main/seventy.ts
 
       - name: Upload Windows build artifact
         uses: actions/upload-artifact@v4
