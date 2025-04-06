@@ -1,6 +1,6 @@
 import { Lexer } from "../lexer/lexer.ts";
 
-const ARGS : string[] = Deno.args;
+const ARGS = Deno.args;
 const HELP_MESSAGE = `
 Usage: seventy [arguments]
 
@@ -11,8 +11,8 @@ Supported arguments:
                                   Tokenizes the given file
 `;
 
-const VERSION : string = "Seventy v0.1.0-beta\n";
-let _silent : boolean = false;
+const VERSION = "Seventy v0.1.0-beta\n";
+let _silent = false;
 
 function silentCommand() {
     _silent = true;
@@ -33,7 +33,7 @@ function tokenizeArgument(filePath?: string) {
     }
 
     try {
-        const content : string = Deno.readTextFileSync(filePath);
+        const content = Deno.readTextFileSync(filePath);
         const lexer = new Lexer(content);
         console.log(lexer.tokenize());
         Deno.exit(0);
@@ -47,11 +47,9 @@ function tokenizeArgument(filePath?: string) {
     }
 }
 
-
 if (ARGS.includes("-S") || ARGS.includes("--silent")) {
     silentCommand();
 }
-
 
 switch (ARGS[0]) {
     case '-H':

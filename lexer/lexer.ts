@@ -1,13 +1,13 @@
-import { isNumber, Token, TokenType, isLetter, PredefinedIdentifiers } from "../global/global.ts";
+import { isNumber, Token as _Token, TokenType, isLetter, PredefinedIdentifiers } from "../global/global.ts";
 
-export let sourceIndex: number = 0;
+export let sourceIndex = 0;
 export class Lexer {
-  private tokens: Token[] = [];
+  private tokens: { type: TokenType; value: string }[] = [];
   constructor(private source: string) {
     this.source = source;
   }
 
-  tokenize(): Token[] {
+  tokenize() {
     this.tokens.length = 0;
     for (sourceIndex = 0; sourceIndex < this.source.length; sourceIndex++) {
       const char = this.source.charAt(sourceIndex);
@@ -29,7 +29,7 @@ export class Lexer {
 
       // Number control
       if (isNumber(char)) {
-        let testNumber: number = parseInt(char);
+        let testNumber = parseInt(char);
         while (sourceIndex + 1 < this.source.length && isNumber(this.source.charAt(sourceIndex + 1))) {
           sourceIndex++;
           testNumber = testNumber * 10 + parseInt(this.source.charAt(sourceIndex));
@@ -40,7 +40,7 @@ export class Lexer {
 
       // String control
       if (char == '"') {
-        let testString: string = "";
+        let testString = "";
         sourceIndex++; // Skip past the opening quote
         while (sourceIndex < this.source.length && this.source.charAt(sourceIndex) !== '"') {
           testString += this.source.charAt(sourceIndex);
@@ -51,7 +51,7 @@ export class Lexer {
       }
 
       if (char == "'") {
-        let testString: string = "";
+        let testString = "";
         sourceIndex++; // Skip past the opening quote
         while (sourceIndex < this.source.length && this.source.charAt(sourceIndex) !== "'") {
           testString += this.source.charAt(sourceIndex);
@@ -121,7 +121,7 @@ export class Lexer {
       
       // Identifier control
       if (isLetter(char)) {
-        let testString: string = char;
+        let testString = char;
         while (sourceIndex + 1 < this.source.length && (isLetter(this.source.charAt(sourceIndex + 1)) || isNumber(this.source.charAt(sourceIndex + 1)))) {
           sourceIndex++;
           testString += this.source.charAt(sourceIndex);
@@ -135,10 +135,10 @@ export class Lexer {
       }
     }
 
-    // Return list of tokens
     return this.tokens;
   }
-  returnTokens(): Token[] {
+  
+  returnTokens() {
     return this.tokens;
   }
 }
