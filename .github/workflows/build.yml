@@ -93,7 +93,7 @@ jobs:
           deno-version: ${{ env.DENO_VERSION }}
 
       - name: Lint Code
-        run: deno lint --unstable
+        run: deno lint
 
   test:
     runs-on: ubuntu-latest
@@ -106,6 +106,7 @@ jobs:
         uses: denoland/setup-deno@v1
         with:
           deno-version: ${{ env.DENO_VERSION }}
-
-      - name: Run Tests
-        run: deno test --unstable
+      
+      # No tests are made yet, coming soon
+      # - name: Run Tests
+      #   run: deno test --unstable
