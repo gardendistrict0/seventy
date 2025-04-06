@@ -53,8 +53,11 @@ jobs:
           body: "This is a nightly build."
           prerelease: true
 
+      - name: Save Release Tag Name
+        run: echo "RELEASE_TAG=nightly-${{ github.ref_name }}-${{ github.sha }}" >> $GITHUB_ENV
+
       - name: Upload Release Assets
         run: |
-          gh release upload ${{ steps.create_release.outputs.tag_name }} build-artifacts.zip
+          gh release upload $RELEASE_TAG build-artifacts.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
