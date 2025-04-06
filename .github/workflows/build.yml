@@ -1,63 +1,116 @@
-name: Build, Store Artifacts, and Create PreRelease
+name: Build and Store Artifacts
 
 on:
+  schedule:
+    - cron: '0 0 * * *'
   push:
+    branches:
+      - main
+  pull_request:
     branches:
       - main
 
 permissions:
   contents: write
   id-token: write
-  actions: write
+
+env:
+  DENO_VERSION: v1.36.0
+  BUILD_DIR: bin
+  ARTIFACT_NAME: build-artifacts
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform: [x86_64-pc-windows-msvc, x86_64-apple-darwin, aarch64-apple-darwin, x86_64-unknown-linux-gnu]
+      fail-fast: false
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: Cache Deno Modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.deno/cache
+          key: ${{ runner.os }}-deno-${{ hashFiles('**/deps.ts') }}
+          restore-keys: |
+            ${{ runner.os }}-deno-
 
-      - name: Set up Deno for compilation
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v1.36.0
+          deno-version: ${{ env.DENO_VERSION }}
 
-      - name: Run build script
+      - name: Get Current Date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+      - name: Check for Commits Made Today
+        id: check_commits
         run: |
-          deno compile --target x86_64-pc-windows-msvc --output bin/seventy-win main/seventy.ts
-          deno compile --target x86_64-apple-darwin --output bin/seventy-mac main/seventy.ts
-          deno compile --target aarch64-apple-darwin --output bin/seventy-mac-arm main/seventy.ts
-          deno compile --target x86_64-unknown-linux-gnu --output bin/seventy-linux main/seventy.ts
+          COMMITS=$(git log --since="${{ steps.date.outputs.date }}T00:00:00" --oneline)
+          if [ -z "$COMMITS" ]; then
+            echo "No commits made today. Exiting."
+            exit 0
+          fi
+          echo "Commits found for today."
 
-      - name: Upload build artifacts
+      - name: Compile Code for ${{ matrix.platform }}
+        run: |
+          deno compile --target ${{ matrix.platform }} --output ${BUILD_DIR}/seventy-${{ matrix.platform }} main/seventy.ts
+
+      - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build-artifacts
-          path: bin/
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${BUILD_DIR}/
 
-      - name: Compress build artifacts
-        run: zip -r build-artifacts.zip bin/
+      - name: Compress Build Artifacts
+        run: zip -r ${BUILD_DIR}/build-artifacts.zip ${BUILD_DIR}/
 
-      - name: Authenticate GitHub CLI
-        run: echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
-
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Compressed Artifacts
+        uses: actions/upload-artifact@v4
         with:
-          tag_name: nightly-${{ github.ref_name }}-${{ github.sha }}
-          release_name: Nightly Build for ${{ github.ref_name }}
-          body: "This is a nightly build."
-          prerelease: true
+          name: ${env.ARTIFACT_NAME}-compressed
+          path: ${BUILD_DIR}/build-artifacts.zip
 
-      - name: Save Release Tag Name
-        run: echo "RELEASE_TAG=nightly-${{ github.ref_name }}-${{ github.sha }}" >> $GITHUB_ENV
-
-      - name: Upload Release Assets
+      - name: Clean Up
         run: |
-          gh release upload $RELEASE_TAG build-artifacts.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          rm -rf ${BUILD_DIR}
+          rm ${BUILD_DIR}/build-artifacts.zip
+
+
+  lint:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: ${{ env.DENO_VERSION }}
+
+      - name: Lint Code
+        run: deno lint --unstable
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: ${{ env.DENO_VERSION }}
+
+      - name: Run Tests
+        run: deno test --unstable
