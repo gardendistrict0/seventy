@@ -1,102 +1,63 @@
-name: Build and Store Artifacts
-
 on:
   schedule:
     - cron: '0 0 * * *'
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-
-permissions:
-  contents: write
-  id-token: write
-
-env:
-  DENO_VERSION: v1.36.0
-  BUILD_DIR: bin
-  ARTIFACT_NAME: build-artifacts
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        platform: [x86_64-pc-windows-msvc, x86_64-apple-darwin, aarch64-apple-darwin, x86_64-unknown-linux-gnu]
-      fail-fast: false
 
     steps:
-      - name: Cache Deno Modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.deno/cache
-          key: ${{ runner.os }}-deno-${{ hashFiles('**/deps.ts') }}
-          restore-keys: |
-            ${{ runner.os }}-deno-
-
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 2
 
-      - name: Set up Deno
+      - name: Set up Deno environment
         uses: denoland/setup-deno@v1
         with:
-          deno-version: ${{ env.DENO_VERSION }}
+          deno-version: v1.36.0
 
-      - name: Get Current Date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
-
-      - name: Check for Commits Made Today
-        id: check_commits
+      - name: Compile project for multiple platforms
         run: |
-          COMMITS=$(git log --since="${{ steps.date.outputs.date }}T00:00:00" --oneline)
-          if [ -z "$COMMITS" ]; then
-            echo "No commits made today. Exiting."
-            exit 0
-          fi
-          echo "Commits found for today."
+          echo "Compiling for Windows (x86_64)"
+          deno compile --target x86_64-pc-windows-msvc --output bin/seventy-win main/seventy.ts
+          
+          echo "Compiling for macOS (x86_64)"
+          deno compile --target x86_64-apple-darwin --output bin/seventy-mac main/seventy.ts
+          
+          echo "Compiling for macOS (ARM)"
+          deno compile --target aarch64-apple-darwin --output bin/seventy-mac-arm main/seventy.ts
+          
+          echo "Compiling for Linux (x86_64)"
+          deno compile --target x86_64-unknown-linux-gnu --output bin/seventy-linux main/seventy.ts
+          
+          echo "Compiling for Linux (ARM)"
+          deno compile --target aarch64-unknown-linux-gnu --output bin/seventy-linux-arm main/seventy.ts
 
-      - name: Compile Code for ${{ matrix.platform }}
-        run: |
-          deno compile --target ${{ matrix.platform }} --output ${BUILD_DIR}/seventy-${{ matrix.platform }} main/seventy.ts
-
-      - name: Upload Build Artifacts
+      - name: Upload Windows build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.ARTIFACT_NAME }}
-          path: ${{ env.BUILD_DIR }}/seventy-${{ matrix.platform }}${{ matrix.platform == 'x86_64-pc-windows-msvc' && '.exe' || '' }}
+          name: seventy-win
+          path: bin/seventy-win.exe
 
-  lint:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set up Deno
-        uses: denoland/setup-deno@v1
+      - name: Upload macOS x86_64 build artifact
+        uses: actions/upload-artifact@v4
         with:
-          deno-version: ${{ env.DENO_VERSION }}
+          name: seventy-mac
+          path: bin/seventy-mac
 
-      - name: Lint Code
-        run: deno lint
-
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set up Deno
-        uses: denoland/setup-deno@v1
+      - name: Upload macOS ARM build artifact
+        uses: actions/upload-artifact@v4
         with:
-          deno-version: ${{ env.DENO_VERSION }}
-      
-      # No tests are made yet, coming soon
-      # - name: Run Tests
-      #   run: deno test --unstable
+          name: seventy-mac-arm
+          path: bin/seventy-mac-arm
+
+      - name: Upload Linux x86_64 build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: seventy-linux
+          path: bin/seventy-linux
+
+      - name: Upload Linux ARM build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: seventy-linux-arm
+          path: bin/seventy-linux-arm
