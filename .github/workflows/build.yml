@@ -79,11 +79,6 @@ jobs:
           name: ${env.ARTIFACT_NAME}-compressed
           path: ${BUILD_DIR}/build-artifacts.zip
 
-      - name: Clean Up
-        run: |
-          rm -rf ${BUILD_DIR}
-          rm ${BUILD_DIR}/build-artifacts.zip
-
 
   lint:
     runs-on: ubuntu-latest
