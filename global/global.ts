@@ -22,7 +22,6 @@ export enum TokenType {
     INCREMENT = "INCREMENT",
     DECREMENT = "DECREMENT",
 
-
     // COMPARISON
     GREATER_THAN = "GREATER_THAN",
     LESS_THAN = "LESS_THAN",
@@ -38,7 +37,14 @@ export enum TokenType {
     XNOR = "XNOR",
     NOT = "NOT",
 
-    //TODO: Add Bitwise operators
+    // BITWISE OPERATORS
+    BITWISE_AND = "BITWISE_AND",
+    BITWISE_OR = "BITWISE_OR",
+    BITWISE_XOR = "BITWISE_XOR",
+    BITWISE_NOT = "BITWISE_NOT",
+    LEFT_SHIFT = "LEFT_SHIFT",
+    RIGHT_SHIFT = "RIGHT_SHIFT",
+    UNSIGNED_RIGHT_SHIFT = "UNSIGNED_RIGHT_SHIFT",
 
     // TYPE
     STRING = "STRING",
@@ -63,6 +69,7 @@ export enum TokenType {
     PRG_CONFIG = "PRG_CONFIG",
     ESCAPE = "ESCAPE"
 }
+
 
 export const PredefinedIdentifiers : string[] = [
     "print",
