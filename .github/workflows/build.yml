@@ -68,17 +68,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.ARTIFACT_NAME }}
-          path: ${BUILD_DIR}/
-
-      - name: Compress Build Artifacts
-        run: zip -r ${BUILD_DIR}/build-artifacts.zip ${BUILD_DIR}/
-
-      - name: Upload Compressed Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${env.ARTIFACT_NAME}-compressed
-          path: ${BUILD_DIR}/build-artifacts.zip
-
+          path: ${BUILD_DIR}/seventy-${{ matrix.platform }}
 
   lint:
     runs-on: ubuntu-latest
