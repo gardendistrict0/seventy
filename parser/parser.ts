@@ -1,9 +1,10 @@
-import { p_BinaryExpression, p_UnaryExpression, Token, TokenType,  } from "../global/global.ts";
+import { p_BinaryExpression, p_UnaryExpression, Token, TokenType } from "../global/global.ts";
   
 
 export class Parser{
-    // deno-lint-ignore no-explicit-any
-    private AST : any = {};
+    //deno-lint-ignore no-explicit-any
+    private AST: any = {}; // Oh no, the poor compiler, no static types, this is so sad. To be continued in the sequel of: "Typescript: A beautiful looking dumpster fire"...
+    private Errors : Error[] = [];
     constructor(private Tokens: Token[]) {
       this.Tokens = Tokens;
     }
@@ -36,6 +37,7 @@ export class Parser{
                 } 
                 index++;
             } else if (index == 0) {
+                this.Errors.push(new Error("Expected number token, got null"));
                 continue;
             }
         }
